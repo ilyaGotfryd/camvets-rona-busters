@@ -4,7 +4,7 @@ import {Accordion, Card, Button, } from 'react-bootstrap';
 class SpaceCards extends Component{
     render()
     {
-        const { spaces } = this.props;
+        const { spaces, onSpaceCleared } = this.props;
         return (
         <Accordion defaultActiveKey="0">
             {
@@ -18,7 +18,7 @@ class SpaceCards extends Component{
                     <Accordion.Collapse eventKey={i}>
                         <Card.Body>
                           Hello! I'm the body with id {space.id}
-                          <Button variant="success">Area Cleard</Button>
+                          <Button variant="success" areaId={space.id} onClick={()=> onSpaceCleared(space.id)} >Area Cleard</Button>
                         </Card.Body>
                     </Accordion.Collapse>
                     </Card>
