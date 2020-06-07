@@ -5,6 +5,7 @@ import SpacesCards from './components/spaceCards';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container } from 'react-bootstrap';
 import { demo_now } from './services/demoTimeService';
+import log_image from './resources/rona_busters.png';
 
 class App extends Component{
 
@@ -36,6 +37,7 @@ class App extends Component{
     return this._cleaning_events[space_id];
   }
 
+
   fetchEntrCounts(space){
       let last_cleaned_event = this.getLatestSpaceCleanedEvent(space.id)
       counts(space.id, last_cleaned_event.time.toISOString(), demo_now().toISOString())
@@ -51,7 +53,7 @@ class App extends Component{
               cleaningInProgress:last_cleaned_event.cleaningInProgress,
               start_time: last_cleaned_event.start_time
              }]
-          _spaces.sort((a, b) => (a.count > b.count) ? -1 : 1)
+          _spaces.sort((a, b) => (a.count > b.count) ? -1 : (a.count === b.count && a.name.toUpperCase() < b.name.toUpperCase())? -1 : 1)
           this.setState({spaces: _spaces})
         }
       )
@@ -69,7 +71,7 @@ class App extends Component{
     let _this = this;
     setInterval(function(){
       _this.fetchEntrCountsInSpaces()
-    }, 20*1000)
+    }, 7*1000)
   }
 
   spaceCleared( space_id ){
@@ -90,13 +92,16 @@ class App extends Component{
 
   render(){
     let header = {textAlign: "center", fontFamily:"Impact,Charcoal,sans-serif"}
-    let subHeader = {textAlign: "center"}
+    let subHeader = {textAlign: "center", color:"#9e9e9e", paddingTop:"10px"}
+    let logoStyle = {width: "30px", height:"30px", marginBottom:"5px"}
     return (
       <div className="App">
-        <br/>
+        <header className="App-header">
+          <h2 style={header}><img src={log_image} alt="rona_busters" style={logoStyle}/>&nbsp;RONA BUSTERS</h2>
+        </header> 
+        <br/><br/>
         <Container>
-          <h2 style={header}>RONA BUSTERS</h2>
-          <h4 style={subHeader}>Hight touch surface cleaning</h4>
+          <h5 style={subHeader}>High Touch Area Cleaning</h5>
           <SpacesCards spaces={this.state.spaces} onSpaceCleared={ id => this.spaceCleared(id) } onStartCleaning={ id => this.startCleaning(id)}/>
         </Container>
       </div>

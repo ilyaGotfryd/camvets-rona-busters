@@ -31,7 +31,7 @@ class SpaceCards extends Component{
                         <p style={decrptext}>Visits: {space.count}&nbsp;</p>
                         {
                           (space.cleaningInProgress)?
-                          (<p style={decrptext}>Time since start cleaning: { this.cleaningDuration(space.start_time)}</p>):
+                          (<p style={decrptext}>Cleaning space for: { this.cleaningDuration(space.start_time)}</p>):
                           (<Button 
                             variant={(space.cleaningInProgress)?"outline-light":"outline-primary"}
                             disabled={space.cleaningInProgress}
