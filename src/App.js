@@ -69,7 +69,7 @@ class App extends Component{
     let _this = this;
     setInterval(function(){
       _this.fetchEntrCountsInSpaces()
-    }, 60*1000)
+    }, 20*1000)
   }
 
   spaceCleared( space_id ){
@@ -89,11 +89,14 @@ class App extends Component{
   }
 
   render(){
+    let header = {textAlign: "center", fontFamily:"Impact,Charcoal,sans-serif"}
+    let subHeader = {textAlign: "center"}
     return (
       <div className="App">
         <br/>
         <Container>
-          <h2>Hight touch surface cleaning</h2>
+          <h2 style={header}>RONA BUSTERS</h2>
+          <h4 style={subHeader}>Hight touch surface cleaning</h4>
           <SpacesCards spaces={this.state.spaces} onSpaceCleared={ id => this.spaceCleared(id) } onStartCleaning={ id => this.startCleaning(id)}/>
         </Container>
       </div>

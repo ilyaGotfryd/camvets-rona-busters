@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Accordion, Card, Button, } from 'react-bootstrap';
+import {Card, Button, Badge} from 'react-bootstrap';
 import { demo_now } from '../services/demoTimeService';
 
 class SpaceCards extends Component{
@@ -15,33 +15,37 @@ class SpaceCards extends Component{
     }
     render()
     {
-        const { spaces, onSpaceCleared, onStartCleaning } = this.props;
-        return (
-        <Accordion defaultActiveKey="0">
-            {
-                spaces.map( (space, i) => (
-                    <Card>
-                    <Card.Header>
-                      <Accordion.Toggle as={Button} variant={(space.count<=20)?"info":(space.count<=50)?"warning":"danger"} eventKey={i}>
-                        {space.name}
-                      </Accordion.Toggle> <Card.Text>Visits: {space.count}</Card.Text>
-                    </Card.Header>
-                    <Accordion.Collapse eventKey={i}>
-                        <Card.Body>
-                          <Button 
-                            variant={(space.cleaningInProgress)?"light":"primary"}
+      const { spaces, onSpaceCleared, onStartCleaning } = this.props;
+      let decrptext = {color:"#616161", fontSize:"16px", marginBottom:"0px"}
+      return (
+              spaces.map( (space, i) => ( 
+                  <Card>
+                    <Card.Body>
+                      <Card.Title> 
+                        <span style={{fontSize:"1.4rem"}}>{space.name}&nbsp;</span>
+                          <Badge variant={(space.count<=20)?"success":(space.count<=50)?"warning":"danger"}>
+                            {(space.count<=20)?"Safe":(space.count<=50)?"Warning":"Urgent"}
+                          </Badge>  
+                      </Card.Title>
+                      <Card.Text>
+                        <p style={decrptext}>Visits: {space.count}&nbsp;</p>
+                        {
+                          (space.cleaningInProgress)?
+                          (<p style={decrptext}>Time since start cleaning: { this.cleaningDuration(space.start_time)}</p>):
+                          (<Button 
+                            variant={(space.cleaningInProgress)?"outline-light":"outline-primary"}
                             disabled={space.cleaningInProgress}
                             onClick={()=>onStartCleaning(space.id)}>
                               {(space.cleaningInProgress)?this.cleaningDuration(space.start_time):"Start Cleaning"}
-                            </Button>&nbsp;
-                            <Button variant="success" areaId={space.id} onClick={()=> onSpaceCleared(space.id)} >Cleaned</Button>
-                        </Card.Body>
-                    </Accordion.Collapse>
-                    </Card>
-                ))
-            }
-      </Accordion>)
-    }
+                            </Button>)
+                        }
+                          &nbsp;
+                          <Button variant="outline-success" areaId={space.id} onClick={()=> onSpaceCleared(space.id)} >Cleaned</Button>
+                        </Card.Text>
+                    </Card.Body>
+                  </Card>
+              ))
+      )}
 };
 
 export default SpaceCards
